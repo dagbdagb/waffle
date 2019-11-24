@@ -19,9 +19,9 @@ This does not do anything at all for configuring your devices. For that, have a 
 
 
 ## How can I use it?
-Assuming you start with a working setup with the Mosquitto MQTT broker and one or more Tasmota devices,*and* your MQTT setup matches mine, there are three simple steps to follow:
+Assuming you start with a working setup with the Mosquitto MQTT broker and one or more Tasmota devices, *and* your MQTT setup matches mine, there are three simple steps to follow:
 
-1. Enable websockets in mosquitto*, by adding these two lines to the mosquitto config file. 
+1. Enable websockets in mosquitto, by adding these two lines to the mosquitto config file. 
 (possibly /etc/mosquitto/mosquitto.conf)
 
         listener 9001
@@ -40,6 +40,8 @@ Search for 'CHANGE THIS' to find the right line.
 Alphabetically. Topics/buttons with a trailing digit are grouped with the topic/button with the same topic *without* a trailing digit.
 
 This reflects my setup, where a wall switch in a room has a topic without a digit, and every device controlled by the same switch has the same topic with a terminating digit. All devices have a group topic, and I use rules to toggle groups of devices from my wall switch.
+
+Devices with more than one relay get a button text with a dash and a trailing digit for each relay.
 
 And finally, my devices use the format {tele|stat|cmnd}/topic/{POWER|RESULT} format for MQTT. If your setup is different, I presume you need to change the JS a bit.
 
@@ -85,7 +87,11 @@ No software is complete without 'unexpected features', or features so glaringly 
 
 * The function for drawing buttons is wrong.
 
-Yeah. When a new device is coming online after the page has been loaded, it will likely end up somewhere odd. Haven't tested this yet.
+    Yeah. When a new device is coming online after the page has been loaded, it will likely end up somewhere odd. Haven't tested this yet.
+    
+* I found something else..
+
+    Cool. Can you send me a fix? :-) I have only so many devices myself.
 
 ## Who wrote this?
 Someone whose day job is not writing HTML or JS. I rely heavily on w3schools and stackoverflow. You have been warned.
