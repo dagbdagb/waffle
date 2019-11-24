@@ -58,18 +58,21 @@ If this should give you cause for concern or not is your business. A full discus
 ## Are there any known bugs?
 No software is complete without 'unexpected features', or features so glaringly missing that it borders on being a bug.
 
-* The JS here will happily create buttons for devices the broker claims is online, even if it isn't.
-This is due to the broker keeping retained messages. Google how to kill it. I could probably work around this in JS.
+* There are buttons for non-existing devices.
+    The JS here will happily create buttons for a device the broker claims is online, even if it isn't. This is due to the broker keeping retained messages. Google how to kill it. I could probably work around this in JS.
 
 * There is no config file. 
-This is distinctly a feature. I want to discover and make everything look pretty, entirely based on information from the broker or devices themselves.
+    
+    This is distinctly a feature. I want to discover and make everything look pretty, entirely based on information from the broker or devices themselves.
 
 * All buttons have the same color.
-IMHO, this looks nice, but from a usability perspective it is less optimal. People with limited sight could certainly benefit from colorcoded buttons.
-Tasmota allows for 5 user defined variables (mem1 to mem5). Each variable will only hold 9 characters. I am considering using one of these as an array of indexes for colors and labels.
+    
+    IMHO, this looks nice, but from a usability perspective it is less optimal. People with limited sight could certainly benefit from colorcoded buttons.
+    Tasmota allows for 5 user defined variables (mem1 to mem5). Each variable will only hold 9 characters. I am considering using one of these as an array of indexes for colors and labels.
 
 * I want custom button text.
-See above.
+    
+    See above.
 
 
 ## Who wrote this?
