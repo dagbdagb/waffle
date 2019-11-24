@@ -50,8 +50,11 @@ And finally, my devices use the format {tele|stat|cmnd}/topic/{POWER|RESULT} for
 Absolutely.
 There are no security considerations in the html/javascript here *at all*.
 The instructions for editing mosquitto.conf above opens one more pathway for bad guys to probe and/or break into your system(s).
-The html file itself is quite short and can quickly be reviewd by anyone. It does load one external javascript library, though.
-If this should give you cause for concern or not is your business. A full discussion about MQTT, websockets and security is out of scope here. Also, if you have enabled authentication in your mosquitto instance, you may have to do the same in this file.
+
+The html file itself is quite short and can quickly be reviewed by anyone. It does load one external javascript library, though.
+If this should give you cause for concern or not is your business. 
+
+A full discussion about MQTT, websockets and security is out of scope here. Also, if you have enabled authentication in your mosquitto instance, you may have to do the same in this file.
 
 
 ## Are there any known bugs?
