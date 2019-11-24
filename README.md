@@ -1,8 +1,9 @@
 # WAFFLE
 Wife Acceptance Factor - Friggin' Lights Edition - A simple panel for Tasmota MQTT devices
 
+
 ## What is this?
-This exposes the fruits of your home automation labor to those less interested in or impressed by Tasmota, MQTT and Home Automation. In a somewhat user-friendly way. It is a short and simple HTML file with some CSS and JS included. 
+This exposes the fruits of your home automation labor to those who are less interested in or flat out annoyed by Tasmota, MQTT and Home Automation. In a somewhat user-friendly way. It is a short and simple HTML file with some CSS and JS included. 
 
 Set the MQTT broker address, and the resulting webpage will show a number of buttons equal to the number of relays on your Online devices as reported by the MQTT broker.
 
@@ -14,7 +15,7 @@ Like this:
 
 
 ## What is it not?
-This does not do anything at all for configuring your devices. 
+This does not do anything at all for configuring your devices. For that, have a look at [Tasmota Device Manager](https://github.com/jziolkowski/tdm).
 
 
 ## How can I use it?
@@ -38,13 +39,9 @@ Search for 'CHANGE THIS' to find the right line.
 ## How are buttons sorted?
 Alphabetically. Topics/buttons with a trailing digit are grouped with the topic/button with the same topic *without* a trailing digit.
 
-This reflects my setup, where a wall switch in a room has a topic without a digit, and every device controlled by the same switch has a digit.
-All devices have a group topic
+This reflects my setup, where a wall switch in a room has a topic without a digit, and every device controlled by the same switch has the same topic with a terminating digit. All devices have a group topic, and I use rules to toggle groups of devices from my wall switch.
 
-Like this:
-    wall switch:    livingroom
-    lamp1:          livingroom1
-    lamp2:          livingroom2
+And finally, my devices use the format {tele|stat|cmnd}/topic/{POWER|RESULT} format for MQTT. If your setup is different, I presume you need to change the JS a bit.
 
 
 ## Are there any concerns with regard to security?
@@ -73,9 +70,24 @@ No software is complete without 'unexpected features', or features so glaringly 
 * I want custom button text.
     
     See above.
+    
+* What about dimmers?
 
+    I don't have any. HTML5 does allow for sliders, so it is most likely doable.
+ 
+ * Sensors?
+    
+    Would be cool to have each button appear as a tiny LCD display, with signal strength, sensors and what not. Let me know when you have forked this an implemented something like it.
+    
+* The page drops contact with the broker.
+
+    I have noticed. I should probably do something to automatically reload the page periodically and/or when connection is dropped.
+
+* The function for drawing buttons is wrong.
+
+Yeah. When a new device is coming online after the page has been loaded, it will likely end up somewhere odd. Haven't tested this yet.
 
 ## Who wrote this?
-Someone whose day job is not writing html or javascript. I rely heavily on w3schools and stackoverflow. You have been warned.
+Someone whose day job is not writing HTML or JS. I rely heavily on w3schools and stackoverflow. You have been warned.
 
 
