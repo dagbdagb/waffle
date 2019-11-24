@@ -35,6 +35,8 @@ Search for 'CHANGE THIS' to find the right line.
 
 3. Load the file in a browser, either from the local filesystem or via a webserver. No installation required.
 
+**Note** My devices use the format {tele|stat|cmnd}/topic/{POWER|RESULT} format for MQTT. If your setup is different, I presume you need to change the JS a bit. Sorry, not sorry.
+
 
 ## How are buttons sorted?
 Alphabetically. Topics/buttons with a trailing digit are grouped with the topic/button with the same topic *without* a trailing digit.
@@ -42,8 +44,6 @@ Alphabetically. Topics/buttons with a trailing digit are grouped with the topic/
 This reflects my setup, where a wall switch in a room has a topic without a digit, and every device controlled by the same switch has the same topic with a terminating digit. All devices have a group topic, and I use rules to toggle groups of devices from my wall switch.
 
 Devices with more than one relay get a button text with a dash and a trailing digit for each relay.
-
-And finally, my devices use the format {tele|stat|cmnd}/topic/{POWER|RESULT} format for MQTT. If your setup is different, I presume you need to change the JS a bit.
 
 
 ## Are there any concerns with regard to security?
