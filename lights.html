@@ -1,0 +1,284 @@
+<html>
+<head>
+    <title>MQTT Tasmotapanel</title>
+    <meta charset="utf-8" />
+    <style>
+	html, body, form {height: 90%; background-color: black;}
+	
+	input[type=button] {
+	    border-radius: 18px;
+	    width: 90%;
+	    height: 13%;
+	    font-size: 4em;
+	    margin-top: 1%;
+	    margin-bottom: 1%;
+	    color: green;
+	    background-color: black;
+	}
+
+	
+	input[type=button]:active {
+          box-shadow: 0 5px #666;
+          transform: translateY(4px);
+     }
+	
+	#maindiv {height: 85%; }
+	
+	.buttondiv:hover { 
+		border: 1px solid gray; 
+		border-radius: 18px;
+	}
+	
+	
+	
+    </style>	
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"> </script>
+    <script type = "text/javascript" language = "javascript">
+	    var host="192.168.100.99"; // ####   CHANGE THIS   ####
+	    var port=9001;
+	    var mqtt;
+	    var reconnectTimeout = 2;
+	    var colors = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "gray"];
+	    var defaultcolorindex = 5;
+	    //var colorindex = 5;
+	    //var labels = ["", "on", "off", "up", "down", "in", "out", "right", "left"];
+	    //var mem1;
+	    var buttons = [];
+	    var buttondivs = [];
+	    var dosetup = true;
+	    
+	    // may use a single digit *hex* index and use a few more colors
+	    
+	    String.prototype.capitalize = function() {
+		return this.charAt(0).toUpperCase() + this.slice(1)
+	    }
+
+	    function toggle(topic, commmand) {
+			var message = new Paho.MQTT.Message("toggle");
+			message.destinationName = "cmnd/" + topic + "/" + command;
+			mqtt.send(message);
+	    }
+    
+	    function check(topic, command) {
+			var message = new Paho.MQTT.Message("");
+			message.destinationName = "cmnd/" + topic + "/" + command;
+			mqtt.send(message);
+	    }
+	    
+	    function getmem1(topic) {
+			var message = new Paho.MQTT.Message("");
+			message.destinationName = "cmnd/" + topic + "/mem1";
+			mqtt.send(message);
+	    }
+    
+	    function onFailure(message) {
+		console.log("Connection Attempt to Host "+host+"Failed");
+		setTimeout(MQTTconnect, reconnectTimeout);
+	    }
+
+	    function drawbuttons() {
+			buttons.sort();
+			buttondivs.sort();
+			myform = document.getElementById('myform'); 
+		
+			for (bd = 0; bd < buttondivs.length; bd++) {
+				if (!document.getElementById(buttondivs[bd] + "-div")) {
+					console.log("Creating " + buttondivs[bd]);
+					var mydiv = document.createElement("div");
+					mydiv.setAttribute('id', buttondivs[bd] + "-div");
+					mydiv.setAttribute('class','buttondiv');
+					myform.appendChild(mydiv);		// attach div to form
+				}
+			}
+		
+			for (b = 0; b < buttons.length; b++) {
+				bsplit = buttons[b].split("-")
+				topic = bsplit[0]
+				if (bsplit[1]) { command = "POWER"+bsplit[1] ;}
+				else { command = "POWER" ;}
+				
+				if (!document.getElementById(buttons[b])) {
+					var mybutton = document.createElement("input"); //new button
+					mybutton.setAttribute('type', "button");
+					mybutton.setAttribute('value', buttons[b].capitalize() );
+					mybutton.setAttribute('id', buttons[b]);
+					mybutton.setAttribute('onclick', 'toggle("' + topic + '","' + command + '")');
+					mybutton.setAttribute('data-color', colors[defaultcolorindex]);
+					divid = topic.replace(/\d+|^\s+|\s+$/g,'') + "-div";  // find the div this button belongs to
+					document.getElementById(divid).appendChild(mybutton);  // attach button to div
+					check(topic, command); //get state of relay
+				}
+			}
+	    }
+	    
+	    function onMessageArrived(msg) {
+			console.log(msg.destinationName + " : " + msg.payloadString);
+			var topic = msg.destinationName.split("/")[1];
+			var myoption = msg.destinationName.split("/")[2];
+			if (topic) { var gtopic = topic.replace(/\d+|^\s+|\s+$/g,'');  }// variable for grouping buttons
+			
+			
+			// redo trigger for drawbuttons
+			if (dosetup && myoption != 'LWT') { // first non-LWT message, and we have not done first setup
+				dosetup = false;
+				drawbuttons();
+			}
+			
+			if (msg.payloadString == 'Online' && myoption == 'LWT') {
+				buttons.push(topic)
+				if (!buttondivs.includes(gtopic)) { buttondivs.push(gtopic); }
+				check(topic,"POWER1")	;
+				check(topic,"POWER2")	;
+				check(topic,"POWER3")	;
+				check(topic,"POWER4")	;
+			}
+	
+			
+			else if (myoption == 'RESULT') {
+				payload = JSON.parse(msg.payloadString)
+				switch(Object.keys(payload)[0]) {
+				
+				
+				case 'POWER':
+					if (payload.POWER == 'ON') {
+						document.getElementById(topic).style.backgroundColor = document.getElementById(topic).getAttribute('data-color');
+						document.getElementById(topic).style.color = "black";
+					}
+					else {
+						document.getElementById(topic).style.backgroundColor = "black";
+						document.getElementById(topic).style.color = document.getElementById(topic).getAttribute('data-color');
+					}
+					break;
+				
+
+				case 'POWER1':
+					// Tasmota treats POWER and POWER1 as the same thing, but always reply without a suffix
+					// if there is only one relay, and always reply with a suffix if there is more than one.
+					// The logic above may have resulted in a button without a suffix. Axe that.
+					
+					// First, I want to remove the topic without a suffix
+					if (buttons.includes(topic)) { 
+						for(var i=0; i<buttons.length; i++) {
+							if (buttons[i] === topic) {
+								buttons.splice(i,1);
+							}
+						}
+					}
+					
+					// .... and the button with that suffix-less topic, if it exists
+					oldbutton = document.getElementById(topic)
+					if (oldbutton) {
+						document.getElementById(topic + "-div").removeChild(oldbutton);
+					}
+					
+					// now add a new button with a suffix, if it does not exist
+					topic = topic + "-1"
+					if (!buttons.includes(topic)) { 
+						buttons.push(topic);
+						drawbuttons();
+					}				
+					if (payload.POWER1 == 'ON') {
+						document.getElementById(topic).style.backgroundColor = document.getElementById(topic).getAttribute('data-color');
+						document.getElementById(topic).style.color = "black";
+					}
+					else {
+						document.getElementById(topic).style.backgroundColor = "black";
+						document.getElementById(topic).style.color = document.getElementById(topic).getAttribute('data-color');
+					}
+					break;
+
+
+				case 'POWER2':
+					topic = topic + "-2";
+					if (!buttons.includes(topic)) { 
+						buttons.push(topic);
+						drawbuttons();
+					}
+					if (payload.POWER2 == 'ON') {
+						document.getElementById(topic).style.backgroundColor = document.getElementById(topic).getAttribute('data-color');
+						document.getElementById(topic).style.color = "black";
+					}
+					else {
+						document.getElementById(topic).style.backgroundColor = "black";
+						document.getElementById(topic).style.color = document.getElementById(topic).getAttribute('data-color');
+					}
+					break;
+				
+
+				case 'POWER3':
+					topic = topic + "-3"
+					if (!buttons.includes(topic)) { 
+						buttons.push(topic);
+						drawbuttons();
+					}
+					if (payload.POWER3 == 'ON') {
+						document.getElementById(topic).style.backgroundColor = document.getElementById(topic).getAttribute('data-color');
+						document.getElementById(topic).style.color = "black";
+					}
+					else {
+						document.getElementById(topic).style.backgroundColor = "black";
+						document.getElementById(topic).style.color = document.getElementById(topic).getAttribute('data-color');
+					}
+					break;
+				
+				
+				case 'POWER4':
+					topic = topic + "-4"
+					if (!buttons.includes(topic)) { 
+						buttons.push(topic);
+						drawbuttons();
+					}
+					if (payload.POWER4 == 'ON') {
+						document.getElementById(topic).style.backgroundColor = document.getElementById(topic).getAttribute('data-color');
+						document.getElementById(topic).style.color = "black";
+					}
+					else {
+						document.getElementById(topic).style.backgroundColor = "black";
+						document.getElementById(topic).style.color = document.getElementById(topic).getAttribute('data-color');
+					}
+					break;
+				}
+		    }
+	    }
+	    
+	    function onConnectionLost(responseObject) {
+			if (responseObject.errorCode !== 0) {
+				console.log("onConnectionLost:" + responseObject.errorMessage);
+			}
+	    }
+
+	    function onConnect() { // Once a connection has been made, make a subscription and send a message.	
+			console.log("Connected ");
+			mqtt.subscribe("stat/+/RESULT"); // ### FIXME
+			mqtt.subscribe("tele/+/LWT"); // ### FIXME
+			message = new Paho.MQTT.Message("hi"); //kill?
+			message.destinationName = "tasmotapanel"; //kill?
+			mqtt.send(message);
+	    }
+
+	    function MQTTconnect() {
+			console.log("connecting to "+ host +" "+ port);
+			mqtt = new Paho.MQTT.Client(host,port,"clientjs");
+			//document.write("connecting to "+ host);
+			var options = {
+				timeout: 3,
+				onSuccess: onConnect,
+				onFailure: onFailure,
+				 };
+			mqtt.onMessageArrived = onMessageArrived
+			mqtt.onConnectionLost = onConnectionLost;
+			mqtt.connect(options); //connect
+		}
+
+    </script>
+</head>
+   
+<body>
+    <div style="text-align:center" id="maindiv">
+	<iframe id="invisible" name="invisible" style="display:none;"></iframe>
+	<form action="/dummy.php" method="post" target="invisible" id="myform"></form>
+    </div>  
+    <script> MQTTconnect(); </script>
+</body>	
+</html>
