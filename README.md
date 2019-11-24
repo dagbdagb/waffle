@@ -48,13 +48,13 @@ And finally, my devices use the format {tele|stat|cmnd}/topic/{POWER|RESULT} for
 
 ## Are there any concerns with regard to security?
 Absolutely.
-There are no security considerations in the html/javascript here *at all*.
-The instructions for editing mosquitto.conf above opens one more pathway for bad guys to probe and/or break into your system(s).
+There are no security considerations in the HTML/JS here *at all*.
+The instructions for editing mosquitto.conf above opens one more pathway for someone to probe and/or break into your system(s).
 
-The html file itself is quite short and can quickly be reviewed by anyone. It does load one external javascript library, though.
+The HTML file itself is quite short and can quickly be reviewed by anyone. It does load one external JS library, though.
 If this should give you cause for concern or not is your business. 
 
-A full discussion about MQTT, websockets and security is out of scope here. Also, if you have enabled authentication in your mosquitto instance, you may have to do the same in this file.
+A full discussion about MQTT, websockets and security is out of scope here. Also, if you have enabled authentication in your mosquitto instance, you will have to modify this file.
 
 
 ## Are there any known bugs?
@@ -78,23 +78,23 @@ No software is complete without 'unexpected features', or features so glaringly 
     
 * What about dimmers?
 
-    I don't have any. HTML5 does allow for sliders, so it is most likely doable.
+    I don't have any. HTML5 does allow for sliders, so it is most likely doable for someone with exactly the right itch.
  
  * Sensors?
     
-    Would be cool to have each button appear as a tiny LCD display, with signal strength, sensors and what not. Let me know when you have forked this an implemented something like it.
+    Would be cool to have each button appear as a tiny LCD display, with signal strength, sensor readings and what not. Let me know when you have forked this and implemented something like it.
     
-* The page drops contact with the broker.
+* The page drops contact with the MQTT broker.
 
     I have noticed. I should probably do something to automatically reload the page periodically and/or when connection is dropped.
 
-* The function for drawing buttons is wrong.
+* The logic in the function for drawing buttons is wrong.
 
     Yeah. When a new device is coming online after the page has been loaded, it will likely end up somewhere odd. Haven't tested this yet.
     
-* I found something else.
+* I found something else/I have a fix for something.
 
-    Cool. Can you send me a fix? :-) I have only so many devices myself.
+    Cool. I hang in the Tasmota Discord channel.
 
 
 ## This is crap. Who TF wrote this thing?
