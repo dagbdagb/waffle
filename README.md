@@ -28,14 +28,15 @@ Assuming you start with a working setup with the Mosquitto MQTT broker and one o
         protocol websockets
 
 ...then restart mosquitto. (_sudo service mosquitto restart_).
-**Note:** Your distribution's build of mosquitto may or may not have support for websockets.
 
 2. Edit the HTML file to point to your own mosquitto MQTT broker.
 Search for 'CHANGE THIS' to find the right line.
 
 3. Load the file in a browser, either from the local filesystem or via a webserver. No installation required.
 
-**Note** My devices use the format {tele|stat|cmnd}/topic/{POWER|RESULT} format for MQTT. If your setup is different, I presume you need to change the JS a bit. Sorry, not sorry.
+**Note 1:** Your distribution's build of mosquitto may or may not have support for websockets.
+
+**Note 2:** My devices use the format {tele|stat|cmnd}/topic/{POWER|RESULT} format for MQTT. If your setup is different, I presume you need to change the JS a bit. Sorry, not sorry.
 
 
 ## How are buttons sorted?
