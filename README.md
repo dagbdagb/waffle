@@ -3,7 +3,7 @@ Wife Acceptance Factor - Friggin' Lights Edition - A simple panel for Tasmota MQ
 
 
 ## What is this?
-This exposes the fruits of your home automation labor to those who are less interested in or flat out annoyed by your obsession with Tasmota, MQTT and Home Automation. In a somewhat user-friendly way. It is a short and simple HTML file with some CSS and JS included. 
+This exposes the fruits of your home automation labor to those who are less interested in (or flat out annoyed by) your obsession with Tasmota, MQTT and Home Automation. In a somewhat user-friendly way. It is a short and simple HTML file with some CSS and JS included. 
 
 Set the MQTT broker address, and the resulting webpage will show a number of buttons equal to the number of relays on your Online devices as reported by the MQTT broker.
 
