@@ -27,10 +27,10 @@ Assuming you start with a working setup with the Mosquitto MQTT broker and one o
         listener 9001
         protocol websockets
 
-...then restart mosquitto. (sudo service mosquitto restart).
+...then restart mosquitto. (_sudo service mosquitto restart_).
 **Note:** Your distribution's build of mosquitto may or may not have support for websockets.
 
-2. Edit the html file to point to your own mosquitto mqtt broker.
+2. Edit the HTML file to point to your own mosquitto MQTT broker.
 Search for 'CHANGE THIS' to find the right line.
 
 3. Load the file in a browser, either from the local filesystem or via a webserver. 
@@ -89,7 +89,7 @@ No software is complete without 'unexpected features', or features so glaringly 
 
     Yeah. When a new device is coming online after the page has been loaded, it will likely end up somewhere odd. Haven't tested this yet.
     
-* I found something else..
+* I found something else.
 
     Cool. Can you send me a fix? :-) I have only so many devices myself.
 
