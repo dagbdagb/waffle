@@ -18,7 +18,7 @@ Like this:
 This does not do anything at all for configuring your devices. For that, have a look at [Tasmota Device Manager](https://github.com/jziolkowski/tdm).
 
 
-## How can I use it?
+## How to use it?
 Assuming you start with a working setup with the Mosquitto MQTT broker and one or more Tasmota devices, *and* your MQTT setup matches mine, there are three simple steps to follow:
 
 1. Enable websockets in mosquitto, by adding these two lines to the mosquitto config file. 
