@@ -1,5 +1,5 @@
 # WAFFLE
-Wife Acceptance Factor - Friggin' Lights Edition  (A simple panel for Tasmota MQTT devices)
+Wife Acceptance Factor - Friggin' Lights Edition  (A simple panel for controlling Tasmota MQTT devices)
 
 
 ## What is this?
