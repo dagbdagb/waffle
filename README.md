@@ -33,7 +33,7 @@ Assuming you start with a working setup with the Mosquitto MQTT broker and one o
 2. Edit the HTML file to point to your own mosquitto MQTT broker.
 Search for 'CHANGE THIS' to find the right line.
 
-3. Load the file in a browser, either from the local filesystem or via a webserver. 
+3. Load the file in a browser, either from the local filesystem or via a webserver. No installation required.
 
 
 ## How are buttons sorted?
